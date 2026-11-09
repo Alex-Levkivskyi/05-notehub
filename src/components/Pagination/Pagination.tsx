@@ -1,17 +1,20 @@
-import React from "react";
-import ReactPaginate from "react-paginate";
+import React, { type ComponentType } from "react";
+import ReactPaginateModule, { type ReactPaginateProps } from "react-paginate";
 import css from "./Pagination.module.css";
+
+type ModuleWithDefault<T> = { default: T };
+
+const ReactPaginate = (
+  ReactPaginateModule as unknown as ModuleWithDefault<
+    ComponentType<ReactPaginateProps>
+  >
+).default;
 
 export interface PaginationProps {
   pageCount: number;
   currentPage: number;
   onPageChange: (selectedPage: number) => void;
 }
-
-// Виправлення для сумісності react-paginate з Vite
-const Paginate =
-  (ReactPaginate as unknown as { default?: typeof ReactPaginate }).default ??
-  ReactPaginate;
 
 const Pagination: React.FC<PaginationProps> = ({
   pageCount,
@@ -23,7 +26,7 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <Paginate
+    <ReactPaginate
       previousLabel="<"
       nextLabel=">"
       breakLabel="..."
